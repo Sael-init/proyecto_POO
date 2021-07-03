@@ -21,14 +21,16 @@ public:
         cout<<"finale"<<'\n';
     }
 
-    void build();
+    virtual void build(vector<int> arr,int left,int right,int id)=0;
+    virtual int query(int left,int right,int qleft,int qright,int qid)=0;
+
 };
 
 class ST_min:public SegmentTree{
     public:    
     ST_min(int n_t):SegmentTree(n_t){}
     
-    void build(vector<int> arr,int left,int right,int id){
+    virtual void build(vector<int> arr,int left,int right,int id){
         if(left==right){
             st[id-1]=arr[left];
             //cout<<"posicion :"<<id<<", valor : "<<arr[left]<<endl;
@@ -42,7 +44,7 @@ class ST_min:public SegmentTree{
         st[id-1]=( st[(id*2)-1] < st[(id*2)] ) ? st[(id*2)-1] : st[id*2];
     }
 
-    int query(int left,int right,int qleft,int qright,int qid){
+    virtual int query(int left,int right,int qleft,int qright,int qid){
         if(left >= qleft && right <= qright){
             cout<<"Inclusion : ["<<left<<","<<right<<"]"<<" ⊂ ["<<qleft<<","<<qright<<"]"<<" -> "<<qid-1<< ","<<st[qid-1]<<endl; 
             return st[qid-1];
@@ -61,7 +63,7 @@ class ST_min:public SegmentTree{
 class ST_max:public SegmentTree{
     public:    
     ST_max(int n_t):SegmentTree(n_t){}
-    void build(vector<int> arr,int left,int right,int id){
+    virtual void build(vector<int> arr,int left,int right,int id){
         if(left==right){
             st[id-1]=arr[left];
             //cout<<"posicion :"<<id<<", valor : "<<arr[left]<<endl;
@@ -75,7 +77,7 @@ class ST_max:public SegmentTree{
         st[id-1]=( st[(id*2)-1] > st[(id*2)] ) ? st[(id*2)-1] : st[id*2];
     }
 
-    int query(int left,int right,int qleft,int qright,int qid){
+    virtual int query(int left,int right,int qleft,int qright,int qid){
         if(left >= qleft && right <= qright){
             cout<<"Inclusion : ["<<left<<","<<right<<"]"<<" ⊂ ["<<qleft<<","<<qright<<"]"<<" -> "<<qid-1<< ","<<st[qid-1]<<endl; 
             return st[qid-1];
@@ -94,7 +96,7 @@ class ST_max:public SegmentTree{
 class ST_sum:public SegmentTree{
     public:    
     ST_sum(int n_t):SegmentTree(n_t){}
-    void build(vector<int> arr,int left,int right,int id){
+    virtual void build(vector<int> arr,int left,int right,int id){
         if(left==right){
             st[id-1]=arr[left];
             //cout<<"posicion :"<<id<<", valor : "<<arr[left]<<endl;
@@ -108,7 +110,7 @@ class ST_sum:public SegmentTree{
         st[id-1]=st[(id*2)-1] + st[(id*2)];
     }
 
-    int query(int left,int right,int qleft,int qright,int qid){
+    virtual int query(int left,int right,int qleft,int qright,int qid){
         if(left >= qleft && right <= qright){
             cout<<"Inclusion : ["<<left<<","<<right<<"]"<<" ⊂ ["<<qleft<<","<<qright<<"]"<<" -> "<<qid-1<< ","<<st[qid-1]<<endl; 
             return st[qid-1];
